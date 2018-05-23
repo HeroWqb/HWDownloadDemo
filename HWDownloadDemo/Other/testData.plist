@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>vid</key>
+		<string>1</string>
+		<key>fileName</key>
+		<string>网络视频文件 01</string>
+		<key>url</key>
+		<string>https://www.apple.com/105/media/cn/iphone-x/2017/01df5b43-28e4-4848-bf20-490c34a926a7/films/feature/iphone-x-feature-cn-20170912_1280x720h.mp4</string>
+	</dict>
+	<dict>
+		<key>vid</key>
+		<string>2</string>
+		<key>fileName</key>
+		<string>网络视频文件 02</string>
+		<key>url</key>
+		<string>https://images.apple.com/media/cn/macbook-pro/2016/b4a9efaa_6fe5_4075_a9d0_8e4592d6146c/films/design/macbook-pro-design-tft-cn-20161026_1536x640h.mp4</string>
+	</dict>
+	<dict>
+		<key>vid</key>
+		<string>3</string>
+		<key>fileName</key>
+		<string>网络视频文件 03</string>
+		<key>url</key>
+		<string>https://www.apple.com/105/media/cn/ipad-pro/how-to/2017/a0f629be_c30b_4333_942f_13a221fc44f3/films/dock/ipad-pro-dock-cn-20160907_1280x720h.mp4</string>
+	</dict>
+	<dict>
+		<key>vid</key>
+		<string>4</string>
+		<key>fileName</key>
+		<string>网络视频文件 04</string>
+		<key>url</key>
+		<string>https://www.apple.com/105/media/cn/ipad/2018/08716702_0a2f_4b2c_9fdd_e08394ae72f1/films/use-two-apps/ipad-use-two-apps-tpl-cn-20180404_1280x720h.mp4</string>
+	</dict>
+	<dict>
+		<key>vid</key>
+		<string>5</string>
+		<key>fileName</key>
+		<string>网络视频文件 05</string>
+		<key>url</key>
+		<string>https://www.apple.com/105/media/us/imac-pro/2018/d0b63f9b_f0de_4dea_a993_62b4cb35ca96/hero/large.mp4</string>
+	</dict>
+	<dict>
+		<key>vid</key>
+		<string>6</string>
+		<key>fileName</key>
+		<string>网络视频文件 06</string>
+		<key>url</key>
+		<string>https://www.apple.com/105/media/us/imac-pro/2018/d0b63f9b_f0de_4dea_a993_62b4cb35ca96/thumbnails/buck/large.mp4</string>
+	</dict>
+	<dict>
+		<key>vid</key>
+		<string>7</string>
+		<key>fileName</key>
+		<string>网络视频文件 07</string>
+		<key>url</key>
+		<string>https://www.apple.com/105/media/us/imac-pro/2018/d0b63f9b_f0de_4dea_a993_62b4cb35ca96/thumbnails/erin-sarofsky/large.mp4</string>
+	</dict>
+	<dict>
+		<key>vid</key>
+		<string>8</string>
+		<key>fileName</key>
+		<string>网络视频文件 08</string>
+		<key>url</key>
+		<string>https://www.apple.com/105/media/cn/imac-pro/2018/d0b63f9b_f0de_4dea_a993_62b4cb35ca96/films/buck/imac-pro-buck-tpl-cn-20180223_1280x720h.mp4</string>
+	</dict>
+	<dict>
+		<key>vid</key>
+		<string>9</string>
+		<key>fileName</key>
+		<string>网络视频文件 09</string>
+		<key>url</key>
+		<string>https://www.apple.com/105/media/cn/imac-pro/2018/d0b63f9b_f0de_4dea_a993_62b4cb35ca96/films/esteban-diacono/imac-pro-esteban-diacono-tpl-cn-20180223_1280x720h.mp4</string>
+	</dict>
+	<dict>
+		<key>vid</key>
+		<string>10</string>
+		<key>fileName</key>
+		<string>网络视频文件 10</string>
+		<key>url</key>
+		<string>https://www.apple.com/105/media/cn/imac-pro/2018/d0b63f9b_f0de_4dea_a993_62b4cb35ca96/films/luigi-honorat/imac-pro-luigi-honrat-tpl-cn-20180223_1280x720h.mp4</string>
+	</dict>
+	<dict>
+		<key>vid</key>
+		<string>11</string>
+		<key>fileName</key>
+		<string>网络视频文件 11</string>
+		<key>url</key>
+		<string>https://www.apple.com/105/media/cn/imac-pro/2018/d0b63f9b_f0de_4dea_a993_62b4cb35ca96/films/bts/luigi-honorat/imac-pro-luigi-honrat-bts-tpl-cn-20180223_1280x720h.mp4</string>
+	</dict>
+	<dict>
+		<key>vid</key>
+		<string>12</string>
+		<key>fileName</key>
+		<string>网络视频文件 12</string>
+		<key>url</key>
+		<string>https://www.apple.com/105/media/cn/imac-pro/2018/d0b63f9b_f0de_4dea_a993_62b4cb35ca96/films/michelle-dougherty/imac-pro-michelle-dougherty-tpl-cn-20180223_1280x720h.mp4</string>
+	</dict>
+	<dict>
+		<key>vid</key>
+		<string>13</string>
+		<key>fileName</key>
+		<string>网络视频文件 13</string>
+		<key>url</key>
+		<string>https://www.apple.com/105/media/cn/iphone-x/2018/5b64bc98_3bd3_4c12_9b3e_bae2df6b2d9d/films/new-light/iphone-x-new-light-tpl-cn-20180201_1280x720h.mp4</string>
+	</dict>
+	<dict>
+		<key>vid</key>
+		<string>14</string>
+		<key>fileName</key>
+		<string>网络视频文件 14</string>
+		<key>url</key>
+		<string>https://www.apple.com/105/media/cn/iphone-x/2017/01df5b43-28e4-4848-bf20-490c34a926a7/films/animoji/iphone-x-animoji-cn-20171205_1280x720h.mp4</string>
+	</dict>
+	<dict>
+		<key>vid</key>
+		<string>15</string>
+		<key>fileName</key>
+		<string>网络视频文件 15</string>
+		<key>url</key>
+		<string>https://www.apple.com/105/media/cn/ipad/2018/08716702_0a2f_4b2c_9fdd_e08394ae72f1/films/browse-files/ipad-browse-files-tpl-cn-20180404_1280x720h.mp4</string>
+	</dict>
+	<dict>
+		<key>vid</key>
+		<string>16</string>
+		<key>fileName</key>
+		<string>网络视频文件 16</string>
+		<key>url</key>
+		<string>https://www.apple.com/105/media/cn/iphone-x/2017/01df5b43-28e4-4848-bf20-490c34a926a7/films/face-id/iphone-x-face-id-cn-20171129_1280x720h.mp4</string>
+	</dict>
+</array>
+</plist>
