@@ -7,6 +7,7 @@
 //
 
 #import "HWDownloadManager.h"
+#import "NSURLSession+CorrectedResumeData.h"
 
 @interface HWDownloadManager ()<NSURLSessionDelegate, NSURLSessionDownloadDelegate>
 
@@ -93,11 +94,17 @@
     // 创建NSURLSessionDownloadTask
     NSURLSessionDownloadTask *downloadTask;
     if (model.resumeData) {
-        downloadTask = [_session downloadTaskWithResumeData:model.resumeData];
+//        CGFloat version = [[[UIDevice currentDevice] systemVersion] floatValue];
+//        if (version >= 10.0 && version < 10.2) {
+            downloadTask = [_session downloadTaskWithCorrectResumeData:model.resumeData];
+//        }else {
+//            downloadTask = [_session downloadTaskWithResumeData:model.resumeData];
+//        }
+        
     }else {
         downloadTask = [_session downloadTaskWithRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:model.url]]];
     }
-    
+
     // 添加描述标签
     downloadTask.taskDescription = model.url;
     

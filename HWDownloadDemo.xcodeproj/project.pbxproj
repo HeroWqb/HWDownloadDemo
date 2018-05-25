@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3D094CF920B802A0003D201F /* NSURLSession+CorrectedResumeData.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D094CF820B802A0003D201F /* NSURLSession+CorrectedResumeData.m */; };
 		3DADAD6C20B2BD70006D7FC8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DADAD6B20B2BD70006D7FC8 /* AppDelegate.m */; };
 		3DADAD7420B2BD70006D7FC8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3DADAD7320B2BD70006D7FC8 /* Assets.xcassets */; };
 		3DADAD7720B2BD70006D7FC8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3DADAD7520B2BD70006D7FC8 /* LaunchScreen.storyboard */; };
@@ -129,6 +130,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3D094CF720B8029F003D201F /* NSURLSession+CorrectedResumeData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURLSession+CorrectedResumeData.h"; sourceTree = "<group>"; };
+		3D094CF820B802A0003D201F /* NSURLSession+CorrectedResumeData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURLSession+CorrectedResumeData.m"; sourceTree = "<group>"; };
 		3DADAD6720B2BD70006D7FC8 /* HWDownloadDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HWDownloadDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3DADAD6A20B2BD70006D7FC8 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		3DADAD6B20B2BD70006D7FC8 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -425,6 +428,8 @@
 				3DADAE2520B2BFBD006D7FC8 /* HWDataBaseManager.m */,
 				3DADAE2B20B2BFBD006D7FC8 /* HWDownloadModel.h */,
 				3DADAE2C20B2BFBD006D7FC8 /* HWDownloadModel.m */,
+				3D094CF720B8029F003D201F /* NSURLSession+CorrectedResumeData.h */,
+				3D094CF820B802A0003D201F /* NSURLSession+CorrectedResumeData.m */,
 			);
 			path = HWDownloadManager;
 			sourceTree = "<group>";
@@ -1097,6 +1102,7 @@
 				3DADAF3920B2C17B006D7FC8 /* UIRefreshControl+AFNetworking.m in Sources */,
 				3DADAE9320B2BFF2006D7FC8 /* UIColor+HW.m in Sources */,
 				3DADAE9220B2BFF2006D7FC8 /* NSString+HW.m in Sources */,
+				3D094CF920B802A0003D201F /* NSURLSession+CorrectedResumeData.m in Sources */,
 				3DADAF4B20B2C17B006D7FC8 /* NSObject+MJProperty.m in Sources */,
 				3DADAE6720B2BFCD006D7FC8 /* UINavigationItem+Swizzling.m in Sources */,
 				3DADAE8220B2BFEA006D7FC8 /* HWCacheVC.m in Sources */,
