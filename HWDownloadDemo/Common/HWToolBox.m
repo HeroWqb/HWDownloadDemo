@@ -96,7 +96,10 @@
     if ([platform isEqualToString:@"iPhone10,5"]) return @"iPhone 8 Plus";
     if ([platform isEqualToString:@"iPhone10,3"]) return @"iPhone X";
     if ([platform isEqualToString:@"iPhone10,6"]) return @"iPhone X";
-    
+    if ([platform isEqualToString:@"iPhone11,2"]) return@"iPhone XS";
+    if ([platform isEqualToString:@"iPhone11,4"] || [platform isEqualToString:@"iPhone11,6"]) return@"iPhone XS Max";
+    if ([platform isEqualToString:@"iPhone11,8"]) return@"iPhone XR";
+
     //iPod Touch
     if ([platform isEqualToString:@"iPod1,1"])   return @"iPod Touch";
     if ([platform isEqualToString:@"iPod2,1"])   return @"iPod Touch 2G";
@@ -117,7 +120,15 @@
     if ([platform isEqualToString:@"iPad3,4"])   return @"iPad 4";
     if ([platform isEqualToString:@"iPad3,5"])   return @"iPad 4";
     if ([platform isEqualToString:@"iPad3,6"])   return @"iPad 4";
-    
+    if ([platform isEqualToString:@"iPad6,11"] || [platform isEqualToString:@"iPad6,12"]) return @"iPad 5";
+    if ([platform isEqualToString:@"iPad7,5"] || [platform isEqualToString:@"iPad7,6"]) return @"iPad 6";
+
+    //iPad Pro
+    if ([platform isEqualToString:@"iPad6,3"] || [platform isEqualToString:@"iPad6,4"]) return @"iPad Pro 9.7 inch";
+    if ([platform isEqualToString:@"iPad6,7"] || [platform isEqualToString:@"iPad6,8"]) return @"iPad Pro 12.9 inch";
+    if ([platform isEqualToString:@"iPad7,1"] || [platform isEqualToString:@"iPad7,2"]) return @"iPad Pro 12.9 inch 2";
+    if ([platform isEqualToString:@"iPad7,3"] || [platform isEqualToString:@"iPad7,4"]) return @"iPad Pro 10.5 inch";
+
     //iPad Air
     if ([platform isEqualToString:@"iPad4,1"])   return @"iPad Air";
     if ([platform isEqualToString:@"iPad4,2"])   return @"iPad Air";
@@ -369,6 +380,16 @@
     NSString *DateTime = [formatter stringFromDate:date];
     
     return DateTime;
+}
+
+// 获取当前时间（时分秒毫秒）
++ (NSString *)currentTimeCorrectToMillisecond
+{
+    NSDateFormatter *formatter = [[NSDateFormatter alloc ] init];
+    [formatter setDateFormat:@"HH:mm:ss.SSS"];
+    NSString *time = [formatter stringFromDate:[NSDate date]];
+    
+    return time;
 }
 
 @end

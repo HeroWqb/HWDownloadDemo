@@ -29,6 +29,11 @@
         cell = [[HWHomeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.backgroundColor = KWhiteColor;
+        
+        // 选中时cell背景色
+        UIView *backgroundViews = [[UIView alloc] initWithFrame:cell.frame];
+        backgroundViews.backgroundColor = [[UIColor colorWithHexString:@"#00CDCD"] colorWithAlphaComponent:0.5f];
+        [cell setSelectedBackgroundView:backgroundViews];
     }
     
     return cell;
@@ -40,7 +45,7 @@
         // 底图
         CGFloat margin = 10.f;
         CGFloat backViewH = 70.f;
-        UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(margin, margin, KMainW - margin * 2, backViewH)];
+        UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, margin * 0.5, KMainW - margin * 2, backViewH)];
         backView.backgroundColor = [UIColor colorWithHexString:@"#00CDCD"];
         [self.contentView addSubview:backView];
         
@@ -82,6 +87,24 @@
     }
     
     return self;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    NSArray *subviews = ISIOS11 ? self.superview.subviews : self.subviews;
+    NSString *classString = ISIOS11 ? @"UISwipeActionPullView" : @"UITableViewCellDeleteConfirmationView";
+    for (UIView *view in subviews) {
+        if ([view isKindOfClass:NSClassFromString(classString)]) {
+            UIButton *deleteBtn = view.subviews.firstObject;
+            view.backgroundColor = KClearColor;
+            deleteBtn.frameY = 5;
+            deleteBtn.frameHeight = 70;
+            [deleteBtn setTitle:@"删除" forState:UIControlStateNormal];
+            break;
+        }
+    }
 }
 
 - (void)setModel:(HWDownloadModel *)model

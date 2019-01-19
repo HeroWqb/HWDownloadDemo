@@ -10,7 +10,7 @@
 #import "HWHomeCell.h"
 #import "HWPlayVC.h"
 
-@interface HWCacheBaseVC ()<UITableViewDataSource, UITableViewDelegate>
+@interface HWCacheBaseVC ()<UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, weak) UIButton *navRightBtn;  // 导航右侧删除按钮
 @property (nonatomic, weak) UIView *tabbarView;     // 底部工具栏
@@ -36,15 +36,24 @@
     [self creatBaseControl];
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    if (_navRightBtn.selected) [self navBtnOnClick:_navRightBtn];
+}
+
 - (void)creatBaseControl
 {
     // 列表
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, KMainW, KMainH - KNavHeight)];
-    tableView.showsVerticalScrollIndicator = NO;
-    tableView.dataSource = self;
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(10, 0, KMainW - 20, KMainH - KNavHeight)];
     tableView.delegate = self;
+    tableView.dataSource = self;
     tableView.rowHeight = 80.f;
-    tableView.backgroundColor = KWhiteColor;
+    tableView.sectionHeaderHeight = 5.f;
+    tableView.sectionFooterHeight = KIsBangScreen ? KBottomSafeArea - 5 : 5;
+    tableView.backgroundColor = KClearColor;
+    tableView.showsVerticalScrollIndicator = NO;
     tableView.allowsMultipleSelectionDuringEditing = YES;
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:tableView];
@@ -62,7 +71,7 @@
     _navRightBtn = deleteBtn;
     
     // 底部视图
-    UIView *tabbarView = [[UIView alloc] initWithFrame:CGRectMake(0, KMainH - 64, KMainW, 49)];
+    UIView *tabbarView = [[UIView alloc] initWithFrame:CGRectMake(0, KMainH - KNavHeight, KMainW, 49 + KBottomSafeArea)];
     tabbarView.backgroundColor = [UIColor colorWithHexString:@"#fafafa"];
     [self.view addSubview:tabbarView];
     _tabbarView = tabbarView;
@@ -94,6 +103,7 @@
 - (void)reloadTableView
 {
     [_tableView reloadData];
+    [self reloadNavRightBtn];
 }
 
 - (void)reloadRowWithModel:(HWDownloadModel *)model index:(NSInteger)index
@@ -107,12 +117,16 @@
     int index = 0;
     [self.dataSource insertObject:model atIndex:index];
     [_tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [self reloadNavRightBtn];
 }
 
 - (void)deleteRowAtIndex:(NSInteger)index
 {
     [self.dataSource removeObjectAtIndex:index];
     [_tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    NSArray *indexPaths = _tableView.indexPathsForSelectedRows;
+    NSString *deleteBtnTitle = indexPaths.count > 0 ? [NSString stringWithFormat:@"删除(%ld)", indexPaths.count] : @"删除";
+    [_deleteBtn setTitle:deleteBtnTitle forState:UIControlStateNormal];
 }
 
 - (void)updateViewWithModel:(HWDownloadModel *)model index:(NSInteger)index
@@ -131,9 +145,11 @@
 
     if (!btn.selected) [self cancelAllSelect];
     
-    CGFloat tabbarY = btn.selected ? KMainH - 64 - 49 : KMainH - 64;
+    CGFloat tabbarY = btn.selected ? KMainH - KNavHeight - _tabbarView.boundsHeight : KMainH - KNavHeight;
+    CGFloat tableViewChangeH = _tabbarView.boundsHeight - _tableView.sectionFooterHeight + 5;
     [UIView animateWithDuration:0.25f animations:^{
-        _tabbarView.frame = CGRectMake(0, tabbarY, KMainW, 49);
+        _tabbarView.frame = CGRectMake(0, tabbarY, KMainW, _allSelbtn.boundsHeight + KBottomSafeArea);
+        _tableView.frameHeight += (btn.selected ? - tableViewChangeH : tableViewChangeH);
     }];
 }
 
@@ -205,9 +221,25 @@
     return cell;
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *view = [[UIView alloc] init];
+    view.backgroundColor = KClearColor;
+    
+    return view;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    UIView *view = [[UIView alloc] init];
+    view.backgroundColor = KClearColor;
+
+    return view;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (_tabbarView.frame.origin.y == KMainH - 64 - 49) {
+    if (_tabbarView.frame.origin.y == KMainH - KNavHeight - _tabbarView.boundsHeight) {
         NSArray *indexPaths = _tableView.indexPathsForSelectedRows;
         if (indexPaths.count > 0) [_deleteBtn setTitle:[NSString stringWithFormat:@"删除(%ld)", indexPaths.count] forState:UIControlStateNormal];
         if (indexPaths.count == self.dataSource.count) [_allSelbtn setTitle:@"取消全选" forState:UIControlStateNormal];
@@ -226,17 +258,12 @@
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(nonnull NSIndexPath *)indexPath
 {
-    if (_tabbarView.frame.origin.y == KMainH - 64 - 49) {
+    if (_tabbarView.frame.origin.y == KMainH - KNavHeight - _tabbarView.boundsHeight) {
         NSArray *indexPaths = _tableView.indexPathsForSelectedRows;
         NSString *deleteBtnTitle = indexPaths.count > 0 ? [NSString stringWithFormat:@"删除(%ld)", indexPaths.count] : @"删除";
         [_deleteBtn setTitle:deleteBtnTitle forState:UIControlStateNormal];
         if (indexPaths.count < self.dataSource.count) [_allSelbtn setTitle:@"全选" forState:UIControlStateNormal];
     }
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return @"删除";
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -245,6 +272,11 @@
     [self deleteRowAtIndex:indexPath.row];
     [self reloadNavRightBtn];
     [[HWDownloadManager shareManager] deleteTaskAndCache:model];
+}
+
+- (void)tableView:(UITableView *)tableView willBeginEditingRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [[tableView cellForRowAtIndexPath:indexPath] setNeedsLayout];
 }
 
 @end

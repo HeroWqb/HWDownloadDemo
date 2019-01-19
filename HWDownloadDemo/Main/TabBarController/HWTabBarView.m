@@ -22,7 +22,7 @@
         for (int i = 0; i < imgNorArray.count; i ++) {
             CGFloat btnW = KMainW / imgNorArray.count;
             CGFloat btnX = btnW * i;
-            UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(btnX, 0.5, btnW, KTabBarHeight - 1)];
+            UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(btnX, 0, btnW, 49)];
             btn.adjustsImageWhenHighlighted = NO;
             [btn setImage:[UIImage imageNamed:imgNorArray[i]] forState:UIControlStateNormal];
             [btn setImage:[UIImage imageNamed:imgSelArray[i]] forState:UIControlStateSelected];

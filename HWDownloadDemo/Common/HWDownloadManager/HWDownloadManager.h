@@ -21,7 +21,7 @@ typedef NS_ENUM(NSInteger, HWDownloadState) {
 
 @interface HWDownloadManager : NSObject
 
-// 获取单例
+// 初始化下载单例，若之前程序杀死时有正在下的任务，会自动恢复下载
 + (instancetype)shareManager;
 
 // 开始下载
@@ -32,11 +32,5 @@ typedef NS_ENUM(NSInteger, HWDownloadState) {
 
 // 删除下载任务及本地缓存
 - (void)deleteTaskAndCache:(HWDownloadModel *)model;
-
-// 下载时，杀死进程，更新所有正在下载的任务为等待
-- (void)updateDownloadingTaskState;
-
-// 重启时开启等待下载的任务
-- (void)openDownloadTask;
 
 @end

@@ -79,4 +79,7 @@
 //获取当前时间
 + (NSString *)currentTime;
 
+// 获取当前时间（时分秒毫秒）
++ (NSString *)currentTimeCorrectToMillisecond;
+
 @end

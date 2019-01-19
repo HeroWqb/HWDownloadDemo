@@ -10,7 +10,10 @@
 
 @interface HWBaseViewController : UIViewController
 
-//导航栏标题
+// 导航栏标题
 @property (nonatomic, copy) NSString *navTitle;
+
+// 是否允许二级页面屏幕左侧右滑返回，默认允许
+@property (nonatomic, assign) BOOL isAllowScrollBack;
 
 @end

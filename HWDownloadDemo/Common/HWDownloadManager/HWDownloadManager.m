@@ -11,11 +11,12 @@
 
 @interface HWDownloadManager ()<NSURLSessionDelegate, NSURLSessionDownloadDelegate>
 
-@property (nonatomic, strong) NSURLSession *session;             // NSURLSession
-@property (nonatomic, strong) NSMutableDictionary *dataTaskDic;  // 同时下载多个文件，需要创建多个NSURLSessionDownloadTask，用该字典来存储
-@property (nonatomic, assign) NSInteger currentCount;            // 当前正在下载的个数
-@property (nonatomic, assign) NSInteger maxConcurrentCount;      // 最大同时下载数量
-@property (nonatomic, assign) BOOL allowsCellularAccess;         // 是否允许蜂窝网络下载
+@property (nonatomic, strong) NSURLSession *session;                 // NSURLSession
+@property (nonatomic, strong) NSMutableDictionary *dataTaskDic;      // 同时下载多个文件，需要创建多个NSURLSessionDownloadTask，用该字典来存储
+@property (nonatomic, strong) NSMutableDictionary *downloadTaskDic;  // 记录任务调用startDownloadTask:方法时间，禁止同一任务极短时间重复调用，防止状态显示错误
+@property (nonatomic, assign) NSInteger currentCount;                // 当前正在下载的个数
+@property (nonatomic, assign) NSInteger maxConcurrentCount;          // 最大同时下载数量
+@property (nonatomic, assign) BOOL allowsCellularAccess;             // 是否允许蜂窝网络下载
 
 @end
 
@@ -41,7 +42,8 @@
         _maxConcurrentCount = [[NSUserDefaults standardUserDefaults] integerForKey:HWDownloadMaxConcurrentCountKey];
         _allowsCellularAccess = [[NSUserDefaults standardUserDefaults] boolForKey:HWDownloadAllowsCellularAccessKey];
         _dataTaskDic = [NSMutableDictionary dictionary];
-        
+        _downloadTaskDic = [NSMutableDictionary dictionary];
+
         // 单线程代理队列
         NSOperationQueue *queue = [[NSOperationQueue alloc] init];
         queue.maxConcurrentOperationCount = 1;
@@ -68,6 +70,10 @@
 // 加入准备下载任务
 - (void)startDownloadTask:(HWDownloadModel *)model
 {
+    // 同一任务，1.0s内禁止重复调用
+    if ([[NSDate date] timeIntervalSinceDate:[_downloadTaskDic valueForKey:model.url]] < 1.0f) return;
+    [_downloadTaskDic setValue:[NSDate date] forKey:model.url];
+
     // 取出数据库中模型数据，如果不存在，添加到数据空中
     HWDownloadModel *downloadModel = [[HWDataBaseManager shareManager] getModelWithUrl:model.url];
     if (!downloadModel) {
@@ -79,37 +85,43 @@
     downloadModel.state = HWDownloadStateWaiting;
     [[HWDataBaseManager shareManager] updateWithModel:downloadModel option:HWDBUpdateOptionState | HWDBUpdateOptionLastStateTime];
 
-    // 下载
+    // 下载（给定一个等待时间，保证currentCount更新）
+    [NSThread sleepForTimeInterval:0.1f];
     if (_currentCount < _maxConcurrentCount && [self networkingAllowsDownloadTask]) [self downloadwithModel:downloadModel];
 }
 
 // 开始下载
 - (void)downloadwithModel:(HWDownloadModel *)model
 {
-    // 更新状态为开始
-    model.state = HWDownloadStateDownloading;
-    [[HWDataBaseManager shareManager] updateWithModel:model option:HWDBUpdateOptionState];
     _currentCount++;
+
+    // cancelByProducingResumeData:回调有延时，给定一个等待时间，重新获取模型，保证获取到resumeData
+    [NSThread sleepForTimeInterval:0.3f];
+    HWDownloadModel *downloadModel = [[HWDataBaseManager shareManager] getModelWithUrl:model.url];
+
+    // 更新状态为开始
+    downloadModel.state = HWDownloadStateDownloading;
+    [[HWDataBaseManager shareManager] updateWithModel:downloadModel option:HWDBUpdateOptionState];
 
     // 创建NSURLSessionDownloadTask
     NSURLSessionDownloadTask *downloadTask;
-    if (model.resumeData) {
+    if (downloadModel.resumeData) {
         CGFloat version = [[[UIDevice currentDevice] systemVersion] floatValue];
         if (version >= 10.0 && version < 10.2) {
-            downloadTask = [_session downloadTaskWithCorrectResumeData:model.resumeData];
+            downloadTask = [_session downloadTaskWithCorrectResumeData:downloadModel.resumeData];
         }else {
-            downloadTask = [_session downloadTaskWithResumeData:model.resumeData];
+            downloadTask = [_session downloadTaskWithResumeData:downloadModel.resumeData];
         }
         
     }else {
-        downloadTask = [_session downloadTaskWithRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:model.url]]];
+        downloadTask = [_session downloadTaskWithRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:downloadModel.url]]];
     }
 
     // 添加描述标签
-    downloadTask.taskDescription = model.url;
+    downloadTask.taskDescription = downloadModel.url;
     
     // 更新存储的NSURLSessionDownloadTask对象
-    [_dataTaskDic setValue:downloadTask forKey:model.url];
+    [_dataTaskDic setValue:downloadTask forKey:downloadModel.url];
 
     // 启动（继续下载）
     [downloadTask resume];
@@ -163,7 +175,10 @@
         }];
         
         // 移除字典存储的对象
-        if (delete) [_dataTaskDic removeObjectForKey:model.url];
+        if (delete) {
+            [_dataTaskDic removeObjectForKey:model.url];
+            [_downloadTaskDic removeObjectForKey:model.url];
+        }
     }
 }
 
@@ -182,24 +197,6 @@
             [self startDownloadWaitingTask];
         }
     }
-}
-
-// 下载时，杀死进程，更新所有正在下载的任务为等待
-- (void)updateDownloadingTaskState
-{
-    NSArray *downloadingData = [[HWDataBaseManager shareManager] getAllDownloadingData];
-    for (HWDownloadModel *model in downloadingData) {
-        model.state = HWDownloadStateWaiting;
-        [[HWDataBaseManager shareManager] updateWithModel:model option:HWDBUpdateOptionState];
-    }
-}
-
-// 重启时开启等待下载的任务
-- (void)openDownloadTask
-{
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self startDownloadWaitingTask];
-    });
 }
 
 // 停止正在下载任务为等待状态
@@ -276,7 +273,7 @@
     // 获取模型
     HWDownloadModel *model = [[HWDataBaseManager shareManager] getModelWithUrl:task.taskDescription];
 
-    // 下载时，进程杀死，重新启动，回调错误
+    // 下载时进程杀死，重新启动时回调错误
     if (error && [error.userInfo objectForKey:NSURLErrorBackgroundTaskCancelledReasonKey]) {
         model.state = HWDownloadStateWaiting;
         model.resumeData = [error.userInfo objectForKey:NSURLSessionDownloadTaskResumeData];
@@ -297,13 +294,14 @@
     // 更新数据
     if (_currentCount > 0) _currentCount--;
     [_dataTaskDic removeObjectForKey:model.url];
-    
+    [_downloadTaskDic removeObjectForKey:model.url];
+
     // 更新数据库状态
     [[HWDataBaseManager shareManager] updateWithModel:model option:HWDBUpdateOptionState];
     
     // 开启等待下载任务
     [self startDownloadWaitingTask];
-    HWLog(@"\n    文件：%@，下载完成 \n    本地路径：%@ \n    错误：%@ \n", model.fileName, model.localPath, error);
+    HWLog(@"\n    文件：%@，didCompleteWithError\n    本地路径：%@ \n    错误：%@ \n", model.fileName, model.localPath, error);
 }
 
 #pragma mark - NSURLSessionDelegate

@@ -82,11 +82,13 @@
 - (void)creatControl
 {
     // tableView
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, KMainW, KMainH - KNavHeight - KTabBarHeight)];
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(10, 0, KMainW - 20, KMainH - KNavHeight - KTabBarHeight)];
     tableView.showsVerticalScrollIndicator = NO;
     tableView.dataSource = self;
     tableView.delegate = self;
     tableView.rowHeight = 80.f;
+    tableView.sectionHeaderHeight = 5.f;
+    tableView.sectionFooterHeight = 5.f;
     tableView.backgroundColor = KWhiteColor;
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:tableView];
@@ -125,6 +127,22 @@
         vc.model = model;
         [self.navigationController pushViewController:vc animated:YES];
     }
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *view = [[UIView alloc] init];
+    view.backgroundColor = KClearColor;
+    
+    return view;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    UIView *view = [[UIView alloc] init];
+    view.backgroundColor = KClearColor;
+    
+    return view;
 }
 
 #pragma mark - HWDownloadNotification

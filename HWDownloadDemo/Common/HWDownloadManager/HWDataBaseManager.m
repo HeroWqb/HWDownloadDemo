@@ -232,7 +232,7 @@ typedef NS_ENUM(NSInteger, HWDBGetDateOption) {
 {
     // 原状态
     NSInteger oldState = [db intForQuery:@"SELECT state FROM t_videoCaches WHERE url = ?", model.url];
-    if (oldState != model.state) {
+    if (oldState != model.state && oldState != HWDownloadStateFinish) {
         // 状态变更通知
         [[NSNotificationCenter defaultCenter] postNotificationName:HWDownloadStateChangeNotification object:model];
     }

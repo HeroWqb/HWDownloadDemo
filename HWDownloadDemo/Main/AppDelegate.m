@@ -28,21 +28,10 @@
     // 开启网络监听
     [[HWNetworkReachabilityManager shareManager] monitorNetworkStatus];
     
-    // 开启等待下载的任务
-    [[HWDownloadManager shareManager] openDownloadTask];
+    // 初始化下载单例，若之前程序杀死时有正在下的任务，会自动恢复下载
+    [HWDownloadManager shareManager];
     
     return YES;
-}
-
-- (void)applicationDidEnterBackground:(UIApplication *)application
-{
-    // 实现如下代码，才能使程序处于后台时被杀死，调用applicationWillTerminate:方法
-    [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^(){}];
-}
-
-- (void)applicationWillTerminate:(UIApplication *)application
-{
-    [[HWDownloadManager shareManager] updateDownloadingTaskState];
 }
 
 // 应用处于后台，所有下载任务完成调用
@@ -55,12 +44,12 @@
 - (void)projectOnceCode
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if (![defaults boolForKey:@"HWProjectOnceKey"]) {
-        // 初始化下载最大并发数为1
+    NSString *onceKey = @"HWProjectOnceKey";
+    if (![defaults boolForKey:onceKey]) {
+        // 初始化下载最大并发数为1，不允许蜂窝网络下载
         [defaults setInteger:1 forKey:HWDownloadMaxConcurrentCountKey];
-        // 初始化不允许蜂窝网络下载
         [defaults setBool:NO forKey:HWDownloadAllowsCellularAccessKey];
-        [defaults setBool:YES forKey:@"HWProjectOnceKey"];
+        [defaults setBool:YES forKey:onceKey];
     }
 }
 
