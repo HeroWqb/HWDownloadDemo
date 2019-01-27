@@ -12,6 +12,8 @@
 
 @property (nonatomic, strong) NSMutableArray<HWDownloadModel *> *dataSource;  // 数据源
 @property (nonatomic, weak) UITableView *tableView;                           // 列表
+@property (nonatomic, assign, readonly, getter=isNavEditing) BOOL navEditing; // 是否是编辑删除状态
+@property (nonatomic, assign, readonly) CGFloat tabbarViewHeight;             // 底部工具栏视图高度
 
 // 刷新列表
 - (void)reloadTableView;

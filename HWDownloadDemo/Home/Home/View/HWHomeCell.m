@@ -57,7 +57,7 @@
         _downloadBtn = downloadBtn;
 
         // 标题
-        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(margin, 0, backView.frameWidth - margin * 4 - btnW, backViewH * 0.6)];
+        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(margin, 0, backView.frameWidth - margin * 3 - btnW, backViewH * 0.6)];
         titleLabel.font = [UIFont boldSystemFontOfSize:18.f];
         titleLabel.textColor = KWhiteColor;
         titleLabel.backgroundColor = backView.backgroundColor;
@@ -66,7 +66,7 @@
         _titleLabel = titleLabel;
         
         // 进度标签
-        UILabel *speedLable = [[UILabel alloc] initWithFrame:CGRectMake(margin, CGRectGetMaxY(titleLabel.frame), titleLabel.frameWidth * 0.4, backViewH * 0.4)];
+        UILabel *speedLable = [[UILabel alloc] initWithFrame:CGRectMake(margin, CGRectGetMaxY(titleLabel.frame), titleLabel.frameWidth * 0.36, backViewH * 0.4)];
         speedLable.font = [UIFont systemFontOfSize:14.f];
         speedLable.textColor = KWhiteColor;
         speedLable.textAlignment = NSTextAlignmentRight;

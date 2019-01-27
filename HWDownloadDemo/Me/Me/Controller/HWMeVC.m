@@ -26,15 +26,20 @@
 
 - (void)creatControl
 {
+    CGFloat controlX = 30;
+    CGFloat controlYPadding = 50.f;
+    CGFloat controlW = KMainW - controlX * 2;
+    CGFloat controlH = 44.f;
+
     // 我的缓存
-    UIButton *cacheBtn = [[UIButton alloc] initWithFrame:CGRectMake(50, 50, KMainW - 100, 44)];
+    UIButton *cacheBtn = [[UIButton alloc] initWithFrame:CGRectMake(controlX, controlYPadding, controlW, controlH)];
     [cacheBtn setTitle:@"我的缓存" forState:UIControlStateNormal];
     cacheBtn.backgroundColor = [UIColor lightGrayColor];
     [cacheBtn addTarget:self action:@selector(cacheBtnOnClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:cacheBtn];
     
     // 设置
-    UIButton *setBtn = [[UIButton alloc] initWithFrame:CGRectMake(50, CGRectGetMaxY(cacheBtn.frame) + 50, KMainW - 100, 44)];
+    UIButton *setBtn = [[UIButton alloc] initWithFrame:CGRectMake(controlX, CGRectGetMaxY(cacheBtn.frame) + controlYPadding, controlW, controlH)];
     [setBtn setTitle:@"设置" forState:UIControlStateNormal];
     setBtn.backgroundColor = [UIColor lightGrayColor];
     [setBtn addTarget:self action:@selector(setBtnOnClick) forControlEvents:UIControlEventTouchUpInside];

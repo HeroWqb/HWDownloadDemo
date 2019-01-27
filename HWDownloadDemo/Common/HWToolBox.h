@@ -14,13 +14,13 @@
 + (NSString *)stringFromByteCount:(long long)byteCount;
 
 // 时间转换为时间戳
-+ (NSInteger)getTimeStampWithDate:(NSDate *)date;
++ (NSTimeInterval)getTimeStampWithDate:(NSDate *)date;
 
 // 时间戳转换为时间
-+ (NSDate *)getDateWithTimeStamp:(NSInteger)timeStamp;
++ (NSDate *)getDateWithTimeStamp:(NSTimeInterval)timeStamp;
 
 // 一个时间戳与当前时间的间隔（s）
-+ (NSInteger)getIntervalsWithTimeStamp:(NSInteger)timeStamp;
++ (NSInteger)getIntervalsWithTimeStamp:(NSTimeInterval)timeStamp;
 
 //获得当前设备型号
 + (NSString *)getCurrentDeviceModel;

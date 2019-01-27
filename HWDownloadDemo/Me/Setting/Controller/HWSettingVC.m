@@ -26,9 +26,14 @@
 
 - (void)creatControl
 {
+    CGFloat controlX = 30.f;
+    CGFloat controlYPadding = 50.f;
+    CGFloat controlW = KMainW - controlX * 2;
+    CGFloat controlH = 44.f;
+    
     // 设置最大并发数
-    UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(50, 50, KMainW - 100, 44)];
-    UILabel *leftView = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 222, 50)];
+    UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(controlX, controlYPadding, controlW, controlH)];
+    UILabel *leftView = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 222, controlH)];
     leftView.text = @" 设置下载最大并发数(上限5):";
     leftView.textColor = KWhiteColor;
     textField.leftView = leftView;
@@ -46,7 +51,7 @@
     _textField = textField;
     
     // 是否允许蜂窝网络下载
-    UILabel *accessLable = [[UILabel alloc] initWithFrame:CGRectMake(50, CGRectGetMaxY(textField.frame) + 50, KMainW - 100, 44)];
+    UILabel *accessLable = [[UILabel alloc] initWithFrame:CGRectMake(controlX, CGRectGetMaxY(textField.frame) + controlYPadding, controlW, controlH)];
     accessLable.text = @" 是否允许蜂窝网络下载";
     accessLable.textColor = KWhiteColor;
     accessLable.textAlignment = NSTextAlignmentLeft;
@@ -62,7 +67,7 @@
     [accessLable addSubview:accessSwitch];
     
     // 清空缓存
-    UIButton *clearBtn = [[UIButton alloc] initWithFrame:CGRectMake(50, CGRectGetMaxY(accessLable.frame) + 50, KMainW - 100, 44)];
+    UIButton *clearBtn = [[UIButton alloc] initWithFrame:CGRectMake(controlX, CGRectGetMaxY(accessLable.frame) + controlYPadding, controlW, controlH)];
     [clearBtn setTitle:@"清空缓存" forState:UIControlStateNormal];
     clearBtn.backgroundColor = [UIColor lightGrayColor];
     [clearBtn addTarget:self action:@selector(clearBtnOnClick) forControlEvents:UIControlEventTouchUpInside];

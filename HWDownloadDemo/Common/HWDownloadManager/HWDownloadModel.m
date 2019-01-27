@@ -32,7 +32,7 @@
     _tmpFileSize = [[resultSet objectForColumn:@"tmpFileSize"] integerValue];
     _progress = [[resultSet objectForColumn:@"progress"] floatValue];
     _state = [[resultSet objectForColumn:@"state"] integerValue];
-    _lastSpeedTime = [[resultSet objectForColumn:@"lastSpeedTime"] integerValue];
+    _lastSpeedTime = [resultSet doubleForColumn:@"lastSpeedTime"];
     _intervalFileSize = [[resultSet objectForColumn:@"intervalFileSize"] integerValue];
     _lastStateTime = [[resultSet objectForColumn:@"lastStateTime"] integerValue];
     _resumeData = [resultSet dataForColumn:@"resumeData"];

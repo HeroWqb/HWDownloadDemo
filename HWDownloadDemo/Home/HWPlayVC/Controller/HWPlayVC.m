@@ -28,7 +28,7 @@
 - (void)creatControl
 {
     // 进度条
-    UISlider *slider = [[UISlider alloc] initWithFrame:CGRectMake(50, 400, KMainW - 100, 50)];
+    UISlider *slider = [[UISlider alloc] initWithFrame:CGRectMake(50, KSuitFloat(400), KMainW - 100, 50)];
     [slider addTarget:self action:@selector(sliderValueChanged:) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:slider];
     

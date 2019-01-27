@@ -74,7 +74,7 @@
     if ([[NSDate date] timeIntervalSinceDate:[_downloadTaskDic valueForKey:model.url]] < 1.0f) return;
     [_downloadTaskDic setValue:[NSDate date] forKey:model.url];
 
-    // 取出数据库中模型数据，如果不存在，添加到数据空中
+    // 取出数据库中模型数据，如果不存在，添加到数据库中（注意：需要保证url唯一，若多条目同一url，则要另做处理）
     HWDownloadModel *downloadModel = [[HWDataBaseManager shareManager] getModelWithUrl:model.url];
     if (!downloadModel) {
         downloadModel = model;
@@ -224,11 +224,11 @@
     HWDownloadModel *model = [[HWDataBaseManager shareManager] getModelWithUrl:downloadTask.taskDescription];
 
     // 更新当前下载大小
-    model.tmpFileSize = totalBytesWritten;
-    model.totalFileSize = totalBytesExpectedToWrite;
-
+    model.tmpFileSize = (NSUInteger)totalBytesWritten;
+    model.totalFileSize = (NSUInteger)totalBytesExpectedToWrite;
+    
     // 计算速度时间内下载文件的大小
-    model.intervalFileSize += bytesWritten;
+    model.intervalFileSize += (NSUInteger)bytesWritten;
 
     // 获取上次计算时间与当前时间间隔
     NSInteger intervals = [HWToolBox getIntervalsWithTimeStamp:model.lastSpeedTime];

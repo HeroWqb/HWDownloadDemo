@@ -16,6 +16,7 @@
 @property (nonatomic, weak) UIView *tabbarView;     // 底部工具栏
 @property (nonatomic, weak) UIButton *allSelbtn;    // 全选按钮
 @property (nonatomic, weak) UIButton *deleteBtn;    // 底部工具栏删除按钮
+@property (nonatomic, readwrite) BOOL navEditing;   // 是否是编辑删除状态
 
 @end
 
@@ -40,7 +41,7 @@
 {
     [super viewWillDisappear:animated];
     
-    if (_navRightBtn.selected) [self navBtnOnClick:_navRightBtn];
+    if (self.isNavEditing) [self navBtnOnClick:_navRightBtn];
 }
 
 - (void)creatBaseControl
@@ -100,6 +101,16 @@
     }
 }
 
+- (BOOL)isNavEditing
+{
+    return _navRightBtn.selected;
+}
+
+- (CGFloat)tabbarViewHeight
+{
+    return _tabbarView.boundsHeight;
+}
+
 - (void)reloadTableView
 {
     [_tableView reloadData];
@@ -118,6 +129,7 @@
     [self.dataSource insertObject:model atIndex:index];
     [_tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
     [self reloadNavRightBtn];
+    [_allSelbtn setTitle:@"全选" forState:UIControlStateNormal];
 }
 
 - (void)deleteRowAtIndex:(NSInteger)index
@@ -145,8 +157,8 @@
 
     if (!btn.selected) [self cancelAllSelect];
     
-    CGFloat tabbarY = btn.selected ? KMainH - KNavHeight - _tabbarView.boundsHeight : KMainH - KNavHeight;
-    CGFloat tableViewChangeH = _tabbarView.boundsHeight - _tableView.sectionFooterHeight + 5;
+    CGFloat tabbarY = KMainH - KNavHeight - (btn.selected ? self.tabbarViewHeight : 0);
+    CGFloat tableViewChangeH = self.tabbarViewHeight - _tableView.sectionFooterHeight + 5;
     [UIView animateWithDuration:0.25f animations:^{
         _tabbarView.frame = CGRectMake(0, tabbarY, KMainW, _allSelbtn.boundsHeight + KBottomSafeArea);
         _tableView.frameHeight += (btn.selected ? - tableViewChangeH : tableViewChangeH);
@@ -239,7 +251,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (_tabbarView.frame.origin.y == KMainH - KNavHeight - _tabbarView.boundsHeight) {
+    if (_tabbarView.frame.origin.y == KMainH - KNavHeight - self.tabbarViewHeight) {
         NSArray *indexPaths = _tableView.indexPathsForSelectedRows;
         if (indexPaths.count > 0) [_deleteBtn setTitle:[NSString stringWithFormat:@"删除(%ld)", indexPaths.count] forState:UIControlStateNormal];
         if (indexPaths.count == self.dataSource.count) [_allSelbtn setTitle:@"取消全选" forState:UIControlStateNormal];
@@ -258,7 +270,7 @@
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(nonnull NSIndexPath *)indexPath
 {
-    if (_tabbarView.frame.origin.y == KMainH - KNavHeight - _tabbarView.boundsHeight) {
+    if (_tabbarView.frame.origin.y == KMainH - KNavHeight - self.tabbarViewHeight) {
         NSArray *indexPaths = _tableView.indexPathsForSelectedRows;
         NSString *deleteBtnTitle = indexPaths.count > 0 ? [NSString stringWithFormat:@"删除(%ld)", indexPaths.count] : @"删除";
         [_deleteBtn setTitle:deleteBtnTitle forState:UIControlStateNormal];

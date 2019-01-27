@@ -76,8 +76,9 @@
 {
     _downloadingBtn.hidden = _downloadingCount == 0;
     [_downloadingBtn setTitle:[NSString stringWithFormat:@"%ld个文件正在缓存", _downloadingCount] forState:UIControlStateNormal];
+    
     self.tableView.frameY = _downloadingCount == 0 ? 0 : _downloadingBtn.frameHeight;
-    self.tableView.frameHeight = _downloadingCount == 0 ? KMainH - KNavHeight : KMainH - KNavHeight - _downloadingBtn.frameHeight;
+    self.tableView.frameHeight = KMainH - KNavHeight - self.tableView.frameY - (self.isNavEditing ? self.tabbarViewHeight - self.tableView.sectionFooterHeight + 5 : 0);
 }
 
 // 状态改变
